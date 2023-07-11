@@ -21,40 +21,6 @@ const navRoutes: NavRoute[] = [
     icon: "mdi-file-document-edit-outline",
     text: "Ordenes de Trabajo",
   },
-  {
-    to: { name: "info" },
-    icon: "mdi-information",
-    text: "Info",
-    children: [
-      {
-        to: { name: "about" },
-        icon: "mdi-information-outline",
-        text: "About",
-      },
-      {
-        to: { name: "contributors" },
-        icon: "mdi-account-group",
-        text: "Contributors",
-      },
-    ],
-  },
-  {
-    to: { name: "personal-data" },
-    icon: "mdi-account",
-    text: "Personal Data",
-    children: [
-      {
-        to: { name: "contact" },
-        icon: "mdi-phone",
-        text: "Contact",
-      },
-      {
-        to: { name: "user-profile" },
-        icon: "mdi-account-circle",
-        text: "User Profile",
-      },
-    ],
-  },
 ];
 
 export default navRoutes;

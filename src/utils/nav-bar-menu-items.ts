@@ -7,23 +7,6 @@ const navBarMenuItems: NavRoute[] = [
     text: "Home",
   },
   {
-    to: { name: "products" },
-    icon: "mdi-package-variant-closed",
-    text: "Products",
-    children: [
-      {
-        to: { name: "products" },
-        icon: "mdi-package-variant-closed",
-        text: "Products",
-      },
-      {
-        to: { name: "product-category", params: { category: "consumer-electronics" } },
-        icon: "mdi-lightning-bolt-circle",
-        text: "Consumer Electronics",
-      },
-    ],
-  },
-  {
     to: { name: "dashboard" },
     icon: "mdi-view-dashboard",
     text: "Dashboard",
