@@ -22,7 +22,7 @@ const guardarCliente = async () => {
 
   cargando.value = true;
   try {
-    await clientesService.store(formulario.value);
+    await clientesService.guardarCliente(formulario.value);
 
     formulario.value = valoresIniciales();
 

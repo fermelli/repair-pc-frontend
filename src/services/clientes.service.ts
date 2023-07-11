@@ -1,20 +1,20 @@
 import { ClienteInterface } from "@/interfaces/cliente.interface";
 import service from "./service";
 
-const store = (cliente: ClienteInterface) => {
+const guardarCliente = (cliente: ClienteInterface) => {
   return service.post<ClienteInterface>("/cliente", cliente);
 };
 
-const get = () => {
+const obtenerClientes = () => {
   return service.get<ClienteInterface[]>("/cliente");
 };
 
-const destroy = (id: number) => {
+const eliminarCliente = (id: number) => {
   return service.delete<ClienteInterface>(`/cliente/${id}`);
 };
 
 export default {
-  store,
-  get,
-  destroy,
+  guardarCliente,
+  obtenerClientes,
+  eliminarCliente,
 };

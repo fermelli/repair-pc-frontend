@@ -37,7 +37,7 @@ const obtenerClientes = async () => {
   cargandoClientes.value = true;
 
   try {
-    const { data } = await clientesService.get();
+    const { data } = await clientesService.obtenerClientes();
 
     clientes.value = data.map((cliente: ClienteInterface) => ({
       ...cliente,
@@ -55,7 +55,7 @@ const guardarEquipo = async () => {
 
   cargando.value = true;
   try {
-    await equiposService.store({ ...formulario.value, clId: idClienteSeleccionado.value || 0 });
+    await equiposService.guardarAperturaCuenta({ ...formulario.value, clId: idClienteSeleccionado.value || 0 });
 
     formulario.value = valoresIniciales();
 

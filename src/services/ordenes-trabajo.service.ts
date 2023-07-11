@@ -1,25 +1,25 @@
 import { OrdenTrabajoInterface } from "@/interfaces/orden-trabajo.interface";
 import service from "./service";
 
-const store = (ordenTrabajo: OrdenTrabajoInterface) => {
+const guardarCuentaCorriente = (ordenTrabajo: OrdenTrabajoInterface) => {
   return service.post<OrdenTrabajoInterface>("/ordenTrabajo", ordenTrabajo);
 };
 
-const get = () => {
+const obtenerOrdenesTrabajo = () => {
   return service.get<OrdenTrabajoInterface[]>("/ordenTrabajo");
 };
 
-const getOrdenesTrabajoEquipo = (idEquipo: number) => {
+const obtenerCuentasCorrientes = (idEquipo: number) => {
   return service.get<OrdenTrabajoInterface[]>(`/ordenTrabajo/${idEquipo}`);
 };
 
-const destroy = (id: number) => {
+const eliminarCuentaCorriente = (id: number) => {
   return service.delete<OrdenTrabajoInterface>(`/ordenTrabajo/${id}`);
 };
 
 export default {
-  store,
-  get,
-  getOrdenesTrabajoEquipo,
-  destroy,
+  guardarCuentaCorriente,
+  obtenerOrdenesTrabajo,
+  obtenerCuentasCorrientes,
+  eliminarCuentaCorriente,
 };

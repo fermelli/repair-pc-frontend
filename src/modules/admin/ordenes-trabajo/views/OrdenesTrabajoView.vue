@@ -19,7 +19,7 @@ const obtenerOrdenesTrabajo = async () => {
   cargando.value = true;
 
   try {
-    const { data } = await ordenesTrabajoService.get();
+    const { data } = await ordenesTrabajoService.obtenerOrdenesTrabajo();
 
     ordenesTrabajo.value = data;
   } catch (error) {
@@ -34,7 +34,7 @@ const eliminarOrdenTrabajo = async (id: number) => {
   eliminando.value = true;
 
   try {
-    await ordenesTrabajoService.destroy(id);
+    await ordenesTrabajoService.eliminarCuentaCorriente(id);
 
     idOrdenTrabajoAEliminar.value = null;
 

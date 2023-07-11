@@ -1,25 +1,25 @@
 import { EquipoInterface } from "@/interfaces/equipo.interface";
 import service from "./service";
 
-const store = (equipo: EquipoInterface) => {
+const guardarAperturaCuenta = (equipo: EquipoInterface) => {
   return service.post<EquipoInterface>("/equipo", equipo);
 };
 
-const get = () => {
+const obtenerEquipos = () => {
   return service.get<EquipoInterface[]>("/equipo");
 };
 
-const getEquiposCliente = (idCliente: number) => {
+const obtenerAperturaCuentas = (idCliente: number) => {
   return service.get<EquipoInterface[]>(`/equipo/${idCliente}`);
 };
 
-const destroy = (id: number) => {
+const eliminarAperturaCuenta = (id: number) => {
   return service.delete<EquipoInterface>(`/equipo/${id}`);
 };
 
 export default {
-  store,
-  get,
-  getEquiposCliente,
-  destroy,
+  guardarAperturaCuenta,
+  obtenerEquipos,
+  obtenerAperturaCuentas,
+  eliminarAperturaCuenta,
 };

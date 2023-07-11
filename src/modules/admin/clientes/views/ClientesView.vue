@@ -76,7 +76,7 @@ const obtenerClientes = async () => {
   cargando.value = true;
 
   try {
-    const { data } = await clientesService.get();
+    const { data } = await clientesService.obtenerClientes();
     clientes.value = data;
   } catch (error) {
     console.log(error);
@@ -96,7 +96,7 @@ const eliminarCliente = async (id: number) => {
   eliminando.value = true;
 
   try {
-    await clientesService.destroy(id);
+    await clientesService.eliminarCliente(id);
 
     idClienteAEliminar.value = null;
 
@@ -115,7 +115,7 @@ const registrarEquipo = (idCliente: number) => {
 
 const listarEquipos = async (idCliente: number) => {
   try {
-    const { data } = await equiposService.getEquiposCliente(idCliente);
+    const { data } = await equiposService.obtenerAperturaCuentas(idCliente);
 
     equiposCliente.value = data;
 
@@ -134,7 +134,7 @@ const registrarOrdenTrabajo = async () => {
   if (!formularioOrdenTrabajoValido.value) return;
 
   try {
-    await ordenesTrabajoService.store({
+    await ordenesTrabajoService.guardarCuentaCorriente({
       ...ordenTrabajo.value,
       eqId: idEquipoSeleccionado.value,
     });

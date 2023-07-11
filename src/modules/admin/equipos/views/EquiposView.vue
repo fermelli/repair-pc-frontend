@@ -30,7 +30,7 @@ const obtenerEquipos = async () => {
   cargando.value = true;
 
   try {
-    const { data } = await equiposService.get();
+    const { data } = await equiposService.obtenerEquipos();
     equipos.value = data;
   } catch (error) {
     console.log(error);
@@ -50,7 +50,7 @@ const eliminarEquipo = async (id: number) => {
   eliminando.value = true;
 
   try {
-    await equiposService.destroy(id);
+    await equiposService.eliminarAperturaCuenta(id);
 
     idEquipoAEliminar.value = null;
 
@@ -64,7 +64,7 @@ const eliminarEquipo = async (id: number) => {
 
 const listarOrdenesTrabajo = async (id: number) => {
   try {
-    const { data } = await ordenesTrabajoService.getOrdenesTrabajoEquipo(id);
+    const { data } = await ordenesTrabajoService.obtenerCuentasCorrientes(id);
 
     dialogOrdenesTrabajo.value = true;
 
