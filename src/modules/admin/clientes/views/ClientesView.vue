@@ -64,6 +64,7 @@ const itemsPorPaginaEquipos = ref(10);
 const dialogOrdenTrabajo = ref(false);
 const idEquipoSeleccionado = ref<number>(0);
 const ordenTrabajo = ref({
+  orId: 0,
   orFecha: "",
   orDescripcion: "",
   eqId: 0,

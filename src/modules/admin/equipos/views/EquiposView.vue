@@ -5,7 +5,7 @@ import { ref } from "vue";
 import { equiposService } from "@/services";
 import { EquipoInterface } from "@/interfaces/equipo.interface";
 import { onMounted } from "vue";
-import { cabecerasEquipos } from "../utils";
+import { cabecerasEquiposConAcciones } from "../utils";
 
 onMounted(() => {
   obtenerEquipos();
@@ -13,8 +13,10 @@ onMounted(() => {
 
 const dialog = ref(false);
 const itemsPorPagina = ref(10);
-const cabeceras = ref(cabecerasEquipos);
+const cabeceras = ref(cabecerasEquiposConAcciones);
 const cargando = ref(false);
+const eliminando = ref(false);
+const idEquipoAEliminar = ref<number | null>(null);
 
 const equipos = ref<EquipoInterface[]>([]);
 
@@ -35,6 +37,23 @@ const actualizarLista = () => {
   obtenerEquipos();
 
   dialog.value = false;
+};
+
+const eliminarEquipo = async (id: number) => {
+  idEquipoAEliminar.value = id;
+  eliminando.value = true;
+
+  try {
+    await equiposService.destroy(id);
+
+    idEquipoAEliminar.value = null;
+
+    obtenerEquipos();
+  } catch (error) {
+    console.log(error);
+  } finally {
+    eliminando.value = false;
+  }
 };
 </script>
 
@@ -77,6 +96,19 @@ const actualizarLista = () => {
         :loading="cargando"
         color="primary"
       >
+        <!-- eslint-disable-next-line vue/valid-v-slot -->
+        <template #item.acciones="{ item }">
+          <v-btn
+            color="red"
+            variant="text"
+            density="compact"
+            :disabled="eliminando"
+            :loading="eliminando && idEquipoAEliminar === item.columns.clId"
+            @click="eliminarEquipo(item.columns.eqId)"
+          >
+            Eliminar
+          </v-btn>
+        </template>
       </v-data-table>
     </v-col>
 
