@@ -40,8 +40,15 @@ const cabeceras = ref([
     key: "clDireccion",
     sortable: false,
   },
+  {
+    title: "Acciones",
+    key: "acciones",
+    sortable: false,
+  },
 ]);
 const cargando = ref(false);
+const eliminando = ref(false);
+const idClienteAEliminar = ref<number | null>(null);
 
 const clientes = ref<ClienteInterface[]>([]);
 
@@ -62,6 +69,23 @@ const actualizarLista = () => {
   obtenerClientes();
 
   dialog.value = false;
+};
+
+const eliminarCliente = async (id: number) => {
+  idClienteAEliminar.value = id;
+  eliminando.value = true;
+
+  try {
+    await clientesService.destroy(id);
+
+    idClienteAEliminar.value = null;
+
+    obtenerClientes();
+  } catch (error) {
+    console.log(error);
+  } finally {
+    eliminando.value = false;
+  }
 };
 </script>
 
@@ -103,7 +127,21 @@ const actualizarLista = () => {
         ]"
         :loading="cargando"
         color="primary"
-      ></v-data-table>
+      >
+        <!-- eslint-disable-next-line vue/valid-v-slot -->
+        <template #item.acciones="{ item }">
+          <v-btn
+            color="red"
+            variant="text"
+            density="compact"
+            :disabled="eliminando"
+            :loading="eliminando && idClienteAEliminar === item.columns.clId"
+            @click="eliminarCliente(item.columns.clId)"
+          >
+            Eliminar
+          </v-btn>
+        </template>
+      </v-data-table>
     </v-col>
 
     <modal-componente

@@ -9,7 +9,12 @@ const get = () => {
   return service.get<ClienteInterface[]>("/cliente");
 };
 
+const destroy = (id: number) => {
+  return service.delete<ClienteInterface>(`/cliente/${id}`);
+};
+
 export default {
   store,
   get,
+  destroy,
 };
