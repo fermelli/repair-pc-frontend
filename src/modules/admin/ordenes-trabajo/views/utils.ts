@@ -14,3 +14,11 @@ export const cabecerasOrdenesTrabajo = [
     sortable: false,
   },
 ];
+
+export const cabecerasOrdenesTrabajoConAcciones = cabecerasOrdenesTrabajo.concat([
+  {
+    title: "Acciones",
+    key: "acciones",
+    sortable: false,
+  },
+]);

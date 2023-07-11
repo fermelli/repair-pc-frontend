@@ -2,16 +2,17 @@
 import { OrdenTrabajoInterface } from "@/interfaces/orden-trabajo.interface";
 import { ordenesTrabajoService } from "@/services";
 import { ref, onMounted } from "vue";
-import { cabecerasOrdenesTrabajo } from "./utils";
+import { cabecerasOrdenesTrabajoConAcciones } from "./utils";
 
 onMounted(() => {
   obtenerOrdenesTrabajo();
 });
 
 const itemsPorPagina = ref(10);
-const cabeceras = ref(cabecerasOrdenesTrabajo);
 const cargando = ref(false);
 const ordenesTrabajo = ref<OrdenTrabajoInterface[]>([]);
+const eliminando = ref(false);
+const idOrdenTrabajoAEliminar = ref<number | null>(null);
 
 const obtenerOrdenesTrabajo = async () => {
   cargando.value = true;
@@ -24,6 +25,23 @@ const obtenerOrdenesTrabajo = async () => {
     console.log(error);
   } finally {
     cargando.value = false;
+  }
+};
+
+const eliminarOrdenTrabajo = async (id: number) => {
+  idOrdenTrabajoAEliminar.value = id;
+  eliminando.value = true;
+
+  try {
+    await ordenesTrabajoService.destroy(id);
+
+    idOrdenTrabajoAEliminar.value = null;
+
+    obtenerOrdenesTrabajo();
+  } catch (error) {
+    console.log(error);
+  } finally {
+    eliminando.value = false;
   }
 };
 </script>
@@ -48,7 +66,7 @@ const obtenerOrdenesTrabajo = async () => {
     <v-col>
       <v-data-table
         v-model:items-per-page="itemsPorPagina"
-        :headers="cabeceras"
+        :headers="cabecerasOrdenesTrabajoConAcciones"
         :items="ordenesTrabajo"
         :items-per-page-options="[
           { value: 10, title: '10' },
@@ -58,6 +76,19 @@ const obtenerOrdenesTrabajo = async () => {
         :loading="cargando"
         color="primary"
       >
+        <!-- eslint-disable-next-line vue/valid-v-slot -->
+        <template #item.acciones="{ item }">
+          <v-btn
+            color="red"
+            variant="text"
+            density="compact"
+            :disabled="eliminando"
+            :loading="eliminando && idOrdenTrabajoAEliminar === item.columns.orId"
+            @click="eliminarOrdenTrabajo(item.columns.orId)"
+          >
+            Eliminar
+          </v-btn>
+        </template>
       </v-data-table>
     </v-col>
   </v-row>

@@ -13,8 +13,13 @@ const getOrdenesTrabajoEquipo = (idEquipo: number) => {
   return service.get<OrdenTrabajoInterface[]>(`/ordenTrabajo/${idEquipo}`);
 };
 
+const destroy = (id: number) => {
+  return service.delete<OrdenTrabajoInterface>(`/ordenTrabajo/${id}`);
+};
+
 export default {
   store,
   get,
   getOrdenesTrabajoEquipo,
+  destroy,
 };
