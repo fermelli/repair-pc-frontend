@@ -2,28 +2,14 @@
 import { OrdenTrabajoInterface } from "@/interfaces/orden-trabajo.interface";
 import { ordenesTrabajoService } from "@/services";
 import { ref, onMounted } from "vue";
+import { cabecerasOrdenesTrabajo } from "./utils";
 
 onMounted(() => {
   obtenerOrdenesTrabajo();
 });
 
 const itemsPorPagina = ref(10);
-const cabeceras = ref([
-  {
-    title: "ID",
-    key: "orId",
-    sortable: false,
-  },
-  {
-    title: "Fecha",
-    key: "orFecha",
-  },
-  {
-    title: "Descripción",
-    key: "orDescripcion",
-    sortable: false,
-  },
-]);
+const cabeceras = ref(cabecerasOrdenesTrabajo);
 const cargando = ref(false);
 const ordenesTrabajo = ref<OrdenTrabajoInterface[]>([]);
 

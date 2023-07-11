@@ -2,10 +2,12 @@
 import ModalComponente from "@/components/ModalComponente.vue";
 import FormularioEquipos from "../components/FormularioEquipos.vue";
 import { ref } from "vue";
-import { equiposService } from "@/services";
+import { equiposService, ordenesTrabajoService } from "@/services";
 import { EquipoInterface } from "@/interfaces/equipo.interface";
 import { onMounted } from "vue";
 import { cabecerasEquiposConAcciones } from "../utils";
+import { OrdenTrabajoInterface } from "@/interfaces/orden-trabajo.interface";
+import { cabecerasOrdenesTrabajo } from "../../ordenes-trabajo/views/utils";
 
 onMounted(() => {
   obtenerEquipos();
@@ -17,6 +19,9 @@ const cabeceras = ref(cabecerasEquiposConAcciones);
 const cargando = ref(false);
 const eliminando = ref(false);
 const idEquipoAEliminar = ref<number | null>(null);
+const ordenesTrabajo = ref<OrdenTrabajoInterface[]>([]);
+const dialogOrdenesTrabajo = ref(false);
+const itemsPorPaginaOrdenesTrabajo = ref(10);
 
 const equipos = ref<EquipoInterface[]>([]);
 
@@ -53,6 +58,18 @@ const eliminarEquipo = async (id: number) => {
     console.log(error);
   } finally {
     eliminando.value = false;
+  }
+};
+
+const listarOrdenesTrabajo = async (id: number) => {
+  try {
+    const { data } = await ordenesTrabajoService.getOrdenesTrabajoEquipo(id);
+
+    dialogOrdenesTrabajo.value = true;
+
+    ordenesTrabajo.value = data;
+  } catch (error) {
+    console.log(error);
   }
 };
 </script>
@@ -108,6 +125,15 @@ const eliminarEquipo = async (id: number) => {
           >
             Eliminar
           </v-btn>
+
+          <v-btn
+            color="primary"
+            variant="text"
+            density="compact"
+            @click="listarOrdenesTrabajo(item.columns.eqId)"
+          >
+            O. Trabajo
+          </v-btn>
         </template>
       </v-data-table>
     </v-col>
@@ -119,6 +145,42 @@ const eliminarEquipo = async (id: number) => {
       texto-ok-accion="Guardar"
     >
       <formulario-equipos @cerrar-modal="actualizarLista"></formulario-equipos>
+    </modal-componente>
+
+    <modal-componente
+      v-model="dialogOrdenesTrabajo"
+      titulo="Ordenes de Trabajo"
+      ancho-modal="1024"
+      texto-ok-accion="Guardar"
+    >
+      <v-container>
+        <v-row>
+          <v-col cols="12">
+            <v-data-table
+              v-model:items-per-page="itemsPorPaginaOrdenesTrabajo"
+              :headers="cabecerasOrdenesTrabajo"
+              :items="ordenesTrabajo"
+              :items-per-page-options="[
+                { value: 10, title: '10' },
+                { value: 20, title: '20' },
+                { value: 30, title: '30' },
+              ]"
+              color="primary"
+            >
+            </v-data-table>
+          </v-col>
+
+          <v-col cols="12">
+            <v-btn
+              color="primary"
+              variant="text"
+              @click="dialogOrdenesTrabajo = false"
+            >
+              Cerrar
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-container>
     </modal-componente>
   </v-row>
 </template>

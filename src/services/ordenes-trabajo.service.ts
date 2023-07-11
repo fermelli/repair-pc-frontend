@@ -9,7 +9,12 @@ const get = () => {
   return service.get<OrdenTrabajoInterface[]>("/ordenTrabajo");
 };
 
+const getOrdenesTrabajoEquipo = (idEquipo: number) => {
+  return service.get<OrdenTrabajoInterface[]>(`/ordenTrabajo/${idEquipo}`);
+};
+
 export default {
   store,
   get,
+  getOrdenesTrabajoEquipo,
 };
