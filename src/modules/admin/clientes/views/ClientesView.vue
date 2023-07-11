@@ -5,6 +5,7 @@ import { clientesService } from "@/services";
 import { ref } from "vue";
 import { ClienteInterface } from "@/interfaces/cliente.interface";
 import { onMounted } from "vue";
+import FormularioEquipos from "../../equipos/components/FormularioEquipos.vue";
 
 onMounted(() => {
   obtenerClientes();
@@ -51,6 +52,8 @@ const eliminando = ref(false);
 const idClienteAEliminar = ref<number | null>(null);
 
 const clientes = ref<ClienteInterface[]>([]);
+const dialogEquipo = ref(false);
+const idClienteSeleccionado = ref<number | null>(null);
 
 const obtenerClientes = async () => {
   cargando.value = true;
@@ -86,6 +89,11 @@ const eliminarCliente = async (id: number) => {
   } finally {
     eliminando.value = false;
   }
+};
+
+const registrarEquipo = (idCliente: number) => {
+  idClienteSeleccionado.value = idCliente || null;
+  dialogEquipo.value = true;
 };
 </script>
 
@@ -140,6 +148,15 @@ const eliminarCliente = async (id: number) => {
           >
             Eliminar
           </v-btn>
+
+          <v-btn
+            color="primary"
+            variant="text"
+            density="compact"
+            @click="registrarEquipo(item.columns.clId)"
+          >
+            R. Equipo
+          </v-btn>
         </template>
       </v-data-table>
     </v-col>
@@ -151,6 +168,18 @@ const eliminarCliente = async (id: number) => {
       texto-ok-accion="Guardar"
     >
       <formulario-clientes @cerrar-modal="actualizarLista"></formulario-clientes>
+    </modal-componente>
+
+    <modal-componente
+      v-model="dialogEquipo"
+      titulo="Registrar Equipo"
+      ancho-modal="1024"
+      texto-ok-accion="Guardar"
+    >
+      <formulario-equipos
+        :id-cliente-pre-seleccionado="1"
+        @cerrar-modal="dialogEquipo = false"
+      ></formulario-equipos>
     </modal-componente>
   </v-row>
 </template>

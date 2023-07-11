@@ -5,12 +5,22 @@ import { campoRequerido } from "@/utils/validaciones";
 import { onMounted } from "vue";
 import { ref } from "vue";
 
+const pros = defineProps({
+  idClientePreSeleccionado: {
+    type: Number,
+    default: null,
+  },
+});
+
+const idClienteSeleccionado = ref<number | null>(pros.idClientePreSeleccionado);
+
 onMounted(() => {
   obtenerClientes();
 });
 
 const emit = defineEmits(["cerrar-modal"]);
 const valoresIniciales = () => ({
+  eqId: 0,
   eqModelo: "",
   eqMarca: "",
   eqDetalle: "",
@@ -22,7 +32,6 @@ const formuarlioValido = ref(false);
 const cargando = ref(false);
 const clientes = ref<ClienteInterface[]>([]);
 const cargandoClientes = ref(false);
-const idClienteSeleccionado = ref<number | null>(null);
 
 const obtenerClientes = async () => {
   cargandoClientes.value = true;
@@ -79,6 +88,7 @@ const guardarEquipo = async () => {
             outlined
             required
             :rules="[campoRequerido]"
+            :disabled="idClientePreSeleccionado !== null"
           ></v-autocomplete>
         </v-col>
 
