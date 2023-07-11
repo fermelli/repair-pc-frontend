@@ -120,6 +120,7 @@ const guardarCliente = async () => {
               class="mr-2"
               color="primary"
               variant="text"
+              :disabled="cargando"
               @click="emit('cerrar-modal')"
             >
               Cancelar
@@ -129,6 +130,7 @@ const guardarCliente = async () => {
               class="ml-2"
               color="primary"
               type="submit"
+              :disabled="cargando"
               :loading="cargando"
             >
               Guardar
