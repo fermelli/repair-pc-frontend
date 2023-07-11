@@ -7,6 +7,11 @@ const navRoutes: NavRoute[] = [
     text: "Dashboard",
   },
   {
+    to: { name: "clientes" },
+    icon: "mdi-account-group",
+    text: "Clientes",
+  },
+  {
     to: { name: "info" },
     icon: "mdi-information",
     text: "Info",
