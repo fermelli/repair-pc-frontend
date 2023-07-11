@@ -10,6 +10,7 @@ import { EquipoInterface } from "@/interfaces/equipo.interface";
 import { cabecerasEquiposConAcciones } from "../../equipos/utils";
 import { ordenesTrabajoService } from "@/services";
 import { campoRequerido } from "@/utils/validaciones";
+import { opcionesItemsPorPagina } from "@/utils/tabla-datos";
 
 onMounted(() => {
   obtenerClientes();
@@ -155,6 +156,7 @@ const registrarOrdenTrabajo = async () => {
           class="ml-2"
           variant="text"
           color="primary"
+          append-icon="mdi-reload"
           @click="obtenerClientes"
         >
           Recargar
@@ -165,6 +167,7 @@ const registrarOrdenTrabajo = async () => {
     <v-col cols="12">
       <v-btn
         color="primary"
+        append-icon="mdi-plus"
         @click="dialog = true"
       >
         Nuevo
@@ -176,43 +179,39 @@ const registrarOrdenTrabajo = async () => {
         v-model:items-per-page="itemsPorPagina"
         :headers="cabeceras"
         :items="clientes"
-        :items-per-page-options="[
-          { value: 10, title: '10' },
-          { value: 20, title: '20' },
-          { value: 30, title: '30' },
-        ]"
+        :items-per-page-options="opcionesItemsPorPagina"
         :loading="cargando"
         color="primary"
       >
         <!-- eslint-disable-next-line vue/valid-v-slot -->
         <template #item.acciones="{ item }">
           <v-btn
-            color="red"
+            color="error"
             variant="text"
-            density="compact"
+            icon="mdi-delete"
             :disabled="eliminando"
             :loading="eliminando && idClienteAEliminar === item.columns.clId"
+            title="Eliminar"
             @click="eliminarCliente(item.columns.clId)"
           >
-            Eliminar
           </v-btn>
 
           <v-btn
             color="primary"
             variant="text"
-            density="compact"
+            icon="mdi-table-plus"
+            title="Registrar Equipo"
             @click="registrarEquipo(item.columns.clId)"
           >
-            R. Equipo
           </v-btn>
 
           <v-btn
             color="primary"
             variant="text"
-            density="compact"
+            icon="mdi-desktop-classic"
+            title="Equipos del Cliente"
             @click="listarEquipos(item.columns.clId)"
           >
-            Equipos
           </v-btn>
         </template>
       </v-data-table>
@@ -252,11 +251,7 @@ const registrarOrdenTrabajo = async () => {
               v-model:items-per-page="itemsPorPaginaEquipos"
               :headers="cabecerasEquiposTabla"
               :items="equiposCliente"
-              :items-per-page-options="[
-                { value: 10, title: '10' },
-                { value: 20, title: '20' },
-                { value: 30, title: '30' },
-              ]"
+              :items-per-page-options="opcionesItemsPorPagina"
               color="primary"
             >
               <!-- eslint-disable-next-line vue/valid-v-slot -->
@@ -264,10 +259,10 @@ const registrarOrdenTrabajo = async () => {
                 <v-btn
                   color="primary"
                   variant="text"
-                  density="compact"
+                  icon="mdi-file-plus"
+                  title="Registrar Orden de Trabajo"
                   @click="abrirModalregistrarOrdenTrabajo(item.columns.eqId)"
                 >
-                  R. Orden Trabajo
                 </v-btn>
               </template>
             </v-data-table>
@@ -277,6 +272,7 @@ const registrarOrdenTrabajo = async () => {
             <v-btn
               color="primary"
               variant="text"
+              append-icon="mdi-close"
               @click="dialogListaEquipos = false"
             >
               Cerrar
@@ -328,6 +324,7 @@ const registrarOrdenTrabajo = async () => {
                 <v-btn
                   color="primary"
                   variant="text"
+                  append-icon="mdi-close"
                   @click="dialogOrdenTrabajo = false"
                 >
                   Cancelar
@@ -337,6 +334,7 @@ const registrarOrdenTrabajo = async () => {
                   class="ml-2"
                   color="primary"
                   type="submit"
+                  append-icon="mdi-content-save"
                 >
                   Registrar
                 </v-btn>

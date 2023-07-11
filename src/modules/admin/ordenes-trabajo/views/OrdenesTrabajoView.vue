@@ -3,6 +3,7 @@ import { OrdenTrabajoInterface } from "@/interfaces/orden-trabajo.interface";
 import { ordenesTrabajoService } from "@/services";
 import { ref, onMounted } from "vue";
 import { cabecerasOrdenesTrabajoConAcciones } from "./utils";
+import { opcionesItemsPorPagina } from "@/utils/tabla-datos";
 
 onMounted(() => {
   obtenerOrdenesTrabajo();
@@ -56,6 +57,7 @@ const eliminarOrdenTrabajo = async (id: number) => {
           class="ml-2"
           variant="text"
           color="primary"
+          append-icon="mdi-reload"
           @click="obtenerOrdenesTrabajo"
         >
           Recargar
@@ -68,11 +70,7 @@ const eliminarOrdenTrabajo = async (id: number) => {
         v-model:items-per-page="itemsPorPagina"
         :headers="cabecerasOrdenesTrabajoConAcciones"
         :items="ordenesTrabajo"
-        :items-per-page-options="[
-          { value: 10, title: '10' },
-          { value: 20, title: '20' },
-          { value: 30, title: '30' },
-        ]"
+        :items-per-page-options="opcionesItemsPorPagina"
         :loading="cargando"
         color="primary"
       >
@@ -81,12 +79,12 @@ const eliminarOrdenTrabajo = async (id: number) => {
           <v-btn
             color="red"
             variant="text"
-            density="compact"
+            icon="mdi-delete"
             :disabled="eliminando"
             :loading="eliminando && idOrdenTrabajoAEliminar === item.columns.orId"
+            title="Eliminar"
             @click="eliminarOrdenTrabajo(item.columns.orId)"
           >
-            Eliminar
           </v-btn>
         </template>
       </v-data-table>

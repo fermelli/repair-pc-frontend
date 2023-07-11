@@ -122,6 +122,7 @@ const guardarCliente = async () => {
               color="primary"
               variant="text"
               :disabled="cargando"
+              append-icon="mdi-close"
               @click="emit('cerrar-modal')"
             >
               Cancelar
@@ -133,6 +134,7 @@ const guardarCliente = async () => {
               type="submit"
               :disabled="cargando"
               :loading="cargando"
+              append-icon="mdi-content-save"
             >
               Guardar
             </v-btn>

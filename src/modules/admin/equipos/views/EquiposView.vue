@@ -8,6 +8,7 @@ import { onMounted } from "vue";
 import { cabecerasEquiposConAcciones } from "../utils";
 import { OrdenTrabajoInterface } from "@/interfaces/orden-trabajo.interface";
 import { cabecerasOrdenesTrabajo } from "../../ordenes-trabajo/views/utils";
+import { opcionesItemsPorPagina } from "@/utils/tabla-datos";
 
 onMounted(() => {
   obtenerEquipos();
@@ -84,6 +85,7 @@ const listarOrdenesTrabajo = async (id: number) => {
           class="ml-2"
           variant="text"
           color="primary"
+          append-icon="mdi-reload"
           @click="obtenerEquipos"
         >
           Recargar
@@ -94,6 +96,7 @@ const listarOrdenesTrabajo = async (id: number) => {
     <v-col cols="12">
       <v-btn
         color="primary"
+        append-icon="mdi-plus"
         @click="dialog = true"
       >
         Nuevo
@@ -105,11 +108,7 @@ const listarOrdenesTrabajo = async (id: number) => {
         v-model:items-per-page="itemsPorPagina"
         :headers="cabeceras"
         :items="equipos"
-        :items-per-page-options="[
-          { value: 10, title: '10' },
-          { value: 20, title: '20' },
-          { value: 30, title: '30' },
-        ]"
+        :items-per-page-options="opcionesItemsPorPagina"
         :loading="cargando"
         color="primary"
       >
@@ -118,21 +117,21 @@ const listarOrdenesTrabajo = async (id: number) => {
           <v-btn
             color="red"
             variant="text"
-            density="compact"
+            icon="mdi-delete"
             :disabled="eliminando"
             :loading="eliminando && idEquipoAEliminar === item.columns.clId"
+            title="Eliminar"
             @click="eliminarEquipo(item.columns.eqId)"
           >
-            Eliminar
           </v-btn>
 
           <v-btn
             color="primary"
             variant="text"
-            density="compact"
+            icon="mdi-file-check"
+            title="Ordenes de Trabajo Asociadas"
             @click="listarOrdenesTrabajo(item.columns.eqId)"
           >
-            O. Trabajo
           </v-btn>
         </template>
       </v-data-table>
@@ -160,11 +159,7 @@ const listarOrdenesTrabajo = async (id: number) => {
               v-model:items-per-page="itemsPorPaginaOrdenesTrabajo"
               :headers="cabecerasOrdenesTrabajo"
               :items="ordenesTrabajo"
-              :items-per-page-options="[
-                { value: 10, title: '10' },
-                { value: 20, title: '20' },
-                { value: 30, title: '30' },
-              ]"
+              :items-per-page-options="opcionesItemsPorPagina"
               color="primary"
             >
             </v-data-table>
@@ -174,6 +169,7 @@ const listarOrdenesTrabajo = async (id: number) => {
             <v-btn
               color="primary"
               variant="text"
+              append-icon="mdi-close"
               @click="dialogOrdenesTrabajo = false"
             >
               Cerrar

@@ -18,7 +18,7 @@ const navRoutes: NavRoute[] = [
   },
   {
     to: { name: "ordenes-trabajo" },
-    icon: "mdi-file-document-edit-outline",
+    icon: "mdi-file-check",
     text: "Ordenes de Trabajo",
   },
 ];
