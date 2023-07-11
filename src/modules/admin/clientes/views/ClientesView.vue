@@ -57,7 +57,7 @@ const eliminando = ref(false);
 const idClienteAEliminar = ref<number | null>(null);
 const clientes = ref<ClienteInterface[]>([]);
 const dialogEquipo = ref(false);
-const idClienteSeleccionado = ref<number | null>(null);
+const idClienteSeleccionado = ref<number>(0);
 const dialogListaEquipos = ref(false);
 const equiposCliente = ref<EquipoInterface[]>([]);
 const cabecerasEquiposTabla = ref(cabecerasEquiposConAcciones);
@@ -109,7 +109,7 @@ const eliminarCliente = async (id: number) => {
 };
 
 const registrarEquipo = (idCliente: number) => {
-  idClienteSeleccionado.value = idCliente || null;
+  idClienteSeleccionado.value = idCliente;
   dialogEquipo.value = true;
 };
 
@@ -233,7 +233,7 @@ const registrarOrdenTrabajo = async () => {
       texto-ok-accion="Guardar"
     >
       <formulario-equipos
-        :id-cliente-pre-seleccionado="1"
+        :id-cliente-pre-seleccionado="idClienteSeleccionado"
         @cerrar-modal="dialogEquipo = false"
       ></formulario-equipos>
     </modal-componente>
