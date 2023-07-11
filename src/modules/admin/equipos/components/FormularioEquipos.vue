@@ -1,28 +1,52 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { clientesService } from "@/services";
+import { ClienteInterface } from "@/interfaces/cliente.interface";
+import { clientesService, equiposService } from "@/services";
 import { campoRequerido } from "@/utils/validaciones";
+import { onMounted } from "vue";
+import { ref } from "vue";
+
+onMounted(() => {
+  obtenerClientes();
+});
 
 const emit = defineEmits(["cerrar-modal"]);
 const valoresIniciales = () => ({
+  eqModelo: "",
+  eqMarca: "",
+  eqDetalle: "",
   clId: 0,
-  clCi: null,
-  clNombre: "",
-  clApellidos: "",
-  clTelefono: null,
-  clDireccion: "",
 });
 
 const formulario = ref(valoresIniciales());
 const formuarlioValido = ref(false);
 const cargando = ref(false);
+const clientes = ref<ClienteInterface[]>([]);
+const cargandoClientes = ref(false);
+const idClienteSeleccionado = ref<number | null>(null);
 
-const guardarCliente = async () => {
+const obtenerClientes = async () => {
+  cargandoClientes.value = true;
+
+  try {
+    const { data } = await clientesService.get();
+
+    clientes.value = data.map((cliente: ClienteInterface) => ({
+      ...cliente,
+      clNombre: `${cliente.clNombre} ${cliente.clApellidos}`,
+    }));
+  } catch (error) {
+    console.log(error);
+  } finally {
+    cargandoClientes.value = false;
+  }
+};
+
+const guardarEquipo = async () => {
   if (!formuarlioValido.value) return;
 
   cargando.value = true;
   try {
-    await clientesService.store(formulario.value);
+    await equiposService.store({ ...formulario.value, clId: idClienteSeleccionado.value || 0 });
 
     formulario.value = valoresIniciales();
 
@@ -39,36 +63,32 @@ const guardarCliente = async () => {
   <v-form
     v-model="formuarlioValido"
     :disabled="cargando"
-    @submit.prevent="guardarCliente"
+    @submit.prevent="guardarEquipo"
   >
     <v-container>
       <v-row>
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <v-text-field
-            v-model="formulario.clCi"
-            label="C. I."
+        <v-col cols="12">
+          <v-autocomplete
+            v-model="idClienteSeleccionado"
+            :items="clientes"
+            hide-no-data
+            item-title="clNombre"
+            item-value="clId"
+            :loading="cargandoClientes"
+            label="Cliente"
             outlined
-            type="number"
             required
             :rules="[campoRequerido]"
-          ></v-text-field>
+          ></v-autocomplete>
         </v-col>
-
-        <v-col
-          cols="12"
-          md="8"
-        ></v-col>
 
         <v-col
           cols="12"
           md="6"
         >
           <v-text-field
-            v-model="formulario.clNombre"
-            label="Nombres"
+            v-model="formulario.eqModelo"
+            label="Modelo"
             outlined
             required
             :rules="[campoRequerido]"
@@ -80,39 +100,22 @@ const guardarCliente = async () => {
           md="6"
         >
           <v-text-field
-            v-model="formulario.clApellidos"
-            label="Apellidos"
+            v-model="formulario.eqMarca"
+            label="Marca"
             outlined
             required
             :rules="[campoRequerido]"
           ></v-text-field>
         </v-col>
 
-        <v-col
-          cols="12"
-          md="4"
-        >
-          <v-text-field
-            v-model="formulario.clTelefono"
-            label="Teléfono"
-            outlined
-            type="number"
-            required
-            :rules="[campoRequerido]"
-          ></v-text-field>
-        </v-col>
-
-        <v-col
-          cols="12"
-          md="8"
-        >
-          <v-text-field
-            v-model="formulario.clDireccion"
-            label="Dirección"
+        <v-col cols="12">
+          <v-textarea
+            v-model="formulario.eqDetalle"
+            label="Detalle"
             outlined
             required
             :rules="[campoRequerido]"
-          ></v-text-field>
+          ></v-textarea>
         </v-col>
 
         <v-col cols="12">

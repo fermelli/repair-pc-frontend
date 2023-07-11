@@ -12,6 +12,11 @@ const navRoutes: NavRoute[] = [
     text: "Clientes",
   },
   {
+    to: { name: "equipos" },
+    icon: "mdi-desktop-mac-dashboard",
+    text: "Equipos",
+  },
+  {
     to: { name: "info" },
     icon: "mdi-information",
     text: "Info",

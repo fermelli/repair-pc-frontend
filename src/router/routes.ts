@@ -3,7 +3,8 @@ import productsRoutes from "@/modules/pages/products/routes";
 import adminDashboardRoutes from "@/modules/admin/dashboard/routes";
 import adminInfoRoutes from "@/modules/admin/info/routes";
 import adminPersonalDataRoutes from "@/modules/admin/personal-data/routes";
-import adminClientRoutes from "@/modules/admin/clientes/routes";
+import adminClientesRoutes from "@/modules/admin/clientes/routes";
+import adminEquiposRoutes from "@/modules/admin/equipos/routes";
 import { Route } from "@/types/routes.type";
 
 const routes: Route[] = [
@@ -12,7 +13,8 @@ const routes: Route[] = [
   ...adminDashboardRoutes,
   ...adminInfoRoutes,
   ...adminPersonalDataRoutes,
-  ...adminClientRoutes,
+  ...adminClientesRoutes,
+  ...adminEquiposRoutes,
 ];
 
 export default routes;
