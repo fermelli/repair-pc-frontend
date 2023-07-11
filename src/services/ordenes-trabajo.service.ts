@@ -5,6 +5,11 @@ const store = (ordenTrabajo: OrdenTrabajoInterface) => {
   return service.post<OrdenTrabajoInterface>("/ordenTrabajo", ordenTrabajo);
 };
 
+const get = () => {
+  return service.get<OrdenTrabajoInterface[]>("/ordenTrabajo");
+};
+
 export default {
   store,
+  get,
 };
