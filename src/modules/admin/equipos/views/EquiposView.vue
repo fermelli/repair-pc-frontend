@@ -5,6 +5,7 @@ import { ref } from "vue";
 import { equiposService } from "@/services";
 import { EquipoInterface } from "@/interfaces/equipo.interface";
 import { onMounted } from "vue";
+import { cabecerasEquipos } from "../utils";
 
 onMounted(() => {
   obtenerEquipos();
@@ -12,25 +13,7 @@ onMounted(() => {
 
 const dialog = ref(false);
 const itemsPorPagina = ref(10);
-const cabeceras = ref([
-  {
-    title: "ID.",
-    key: "eqId",
-    sortable: false,
-  },
-  {
-    title: "Modelo",
-    key: "eqModelo",
-  },
-  {
-    title: "Marca",
-    key: "eqMarca",
-  },
-  {
-    title: "Detalle",
-    key: "eqDetalle",
-  },
-]);
+const cabeceras = ref(cabecerasEquipos);
 const cargando = ref(false);
 
 const equipos = ref<EquipoInterface[]>([]);
@@ -46,6 +29,12 @@ const obtenerEquipos = async () => {
   } finally {
     cargando.value = false;
   }
+};
+
+const actualizarLista = () => {
+  obtenerEquipos();
+
+  dialog.value = false;
 };
 </script>
 
@@ -97,7 +86,7 @@ const obtenerEquipos = async () => {
       ancho-modal="1024"
       texto-ok-accion="Guardar"
     >
-      <formulario-equipos @cerrar-modal="dialog = false"></formulario-equipos>
+      <formulario-equipos @cerrar-modal="actualizarLista"></formulario-equipos>
     </modal-componente>
   </v-row>
 </template>

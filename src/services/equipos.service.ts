@@ -9,7 +9,12 @@ const get = () => {
   return service.get<EquipoInterface[]>("/equipo");
 };
 
+const getEquiposCliente = (idCliente: number) => {
+  return service.get<EquipoInterface[]>(`/equipo/${idCliente}`);
+};
+
 export default {
   store,
   get,
+  getEquiposCliente,
 };
