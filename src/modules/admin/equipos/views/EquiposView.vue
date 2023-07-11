@@ -9,6 +9,7 @@ import { cabecerasEquiposConAcciones } from "../utils";
 import { OrdenTrabajoInterface } from "@/interfaces/orden-trabajo.interface";
 import { cabecerasOrdenesTrabajo } from "../../ordenes-trabajo/views/utils";
 import { opcionesItemsPorPagina } from "@/utils/tabla-datos";
+import { useToast } from "vue-toast-notification";
 
 onMounted(() => {
   obtenerEquipos();
@@ -23,8 +24,8 @@ const idEquipoAEliminar = ref<number | null>(null);
 const ordenesTrabajo = ref<OrdenTrabajoInterface[]>([]);
 const dialogOrdenesTrabajo = ref(false);
 const itemsPorPaginaOrdenesTrabajo = ref(10);
-
 const equipos = ref<EquipoInterface[]>([]);
+const $toast = useToast();
 
 const obtenerEquipos = async () => {
   cargando.value = true;
@@ -53,6 +54,8 @@ const eliminarEquipo = async (id: number) => {
     await equiposService.eliminarAperturaCuenta(id);
 
     idEquipoAEliminar.value = null;
+
+    $toast.success("Equipo eliminado correctamente");
 
     obtenerEquipos();
   } catch (error) {

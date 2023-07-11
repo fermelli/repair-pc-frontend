@@ -4,6 +4,7 @@ import { clientesService, equiposService } from "@/services";
 import { campoRequerido } from "@/utils/validaciones";
 import { onMounted } from "vue";
 import { ref } from "vue";
+import { useToast } from "vue-toast-notification";
 
 const pros = defineProps({
   idClientePreSeleccionado: {
@@ -32,6 +33,7 @@ const formuarlioValido = ref(false);
 const cargando = ref(false);
 const clientes = ref<ClienteInterface[]>([]);
 const cargandoClientes = ref(false);
+const $toast = useToast();
 
 const obtenerClientes = async () => {
   cargandoClientes.value = true;
@@ -58,6 +60,8 @@ const guardarEquipo = async () => {
     await equiposService.guardarAperturaCuenta({ ...formulario.value, clId: idClienteSeleccionado.value || 0 });
 
     formulario.value = valoresIniciales();
+
+    $toast.success("Equipo guardado correctamente");
 
     emit("cerrar-modal");
   } catch (error) {

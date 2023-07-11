@@ -11,6 +11,7 @@ import { cabecerasEquiposConAcciones } from "../../equipos/utils";
 import { ordenesTrabajoService } from "@/services";
 import { campoRequerido } from "@/utils/validaciones";
 import { opcionesItemsPorPagina } from "@/utils/tabla-datos";
+import { useToast } from "vue-toast-notification";
 
 onMounted(() => {
   obtenerClientes();
@@ -71,12 +72,14 @@ const ordenTrabajo = ref({
   eqId: 0,
 });
 const formularioOrdenTrabajoValido = ref(false);
+const $toast = useToast();
 
 const obtenerClientes = async () => {
   cargando.value = true;
 
   try {
     const { data } = await clientesService.obtenerClientes();
+
     clientes.value = data;
   } catch (error) {
     console.log(error);
@@ -99,6 +102,8 @@ const eliminarCliente = async (id: number) => {
     await clientesService.eliminarCliente(id);
 
     idClienteAEliminar.value = null;
+
+    $toast.success("Cliente eliminado con éxito");
 
     obtenerClientes();
   } catch (error) {
@@ -138,6 +143,8 @@ const registrarOrdenTrabajo = async () => {
       ...ordenTrabajo.value,
       eqId: idEquipoSeleccionado.value,
     });
+
+    $toast.success("Orden de trabajo registrada con éxito");
 
     dialogOrdenTrabajo.value = false;
   } catch (error) {

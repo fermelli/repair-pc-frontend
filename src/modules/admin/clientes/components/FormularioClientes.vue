@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { clientesService } from "@/services";
 import { campoRequerido } from "@/utils/validaciones";
+import { useToast } from "vue-toast-notification";
 
 const emit = defineEmits(["cerrar-modal"]);
 const valoresIniciales = () => ({
@@ -16,6 +17,7 @@ const valoresIniciales = () => ({
 const formulario = ref(valoresIniciales());
 const formuarlioValido = ref(false);
 const cargando = ref(false);
+const $toast = useToast();
 
 const guardarCliente = async () => {
   if (!formuarlioValido.value) return;
@@ -25,6 +27,8 @@ const guardarCliente = async () => {
     await clientesService.guardarCliente(formulario.value);
 
     formulario.value = valoresIniciales();
+
+    $toast.success("Cliente guardado correctamente");
 
     emit("cerrar-modal");
   } catch (error) {

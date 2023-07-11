@@ -4,6 +4,7 @@ import { ordenesTrabajoService } from "@/services";
 import { ref, onMounted } from "vue";
 import { cabecerasOrdenesTrabajoConAcciones } from "./utils";
 import { opcionesItemsPorPagina } from "@/utils/tabla-datos";
+import { useToast } from "vue-toast-notification";
 
 onMounted(() => {
   obtenerOrdenesTrabajo();
@@ -14,6 +15,7 @@ const cargando = ref(false);
 const ordenesTrabajo = ref<OrdenTrabajoInterface[]>([]);
 const eliminando = ref(false);
 const idOrdenTrabajoAEliminar = ref<number | null>(null);
+const $toast = useToast();
 
 const obtenerOrdenesTrabajo = async () => {
   cargando.value = true;
@@ -37,6 +39,8 @@ const eliminarOrdenTrabajo = async (id: number) => {
     await ordenesTrabajoService.eliminarCuentaCorriente(id);
 
     idOrdenTrabajoAEliminar.value = null;
+
+    $toast.success("Orden de trabajo eliminada correctamente");
 
     obtenerOrdenesTrabajo();
   } catch (error) {
